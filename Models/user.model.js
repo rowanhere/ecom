@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ['user', 'admin'],
       default: 'user'
+    },
+    liked:{
+      type: Map,
+      of: Object,
+      default: {},
     }
   },
   { timestamps: true }

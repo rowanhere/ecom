@@ -5,6 +5,7 @@ import cors from "cors";
 import Product from "./Models/products.model.js";
 import getProduct from "./Helpers/getProduct.js";
 import { authRoutes } from "./authroutes/authRoutes.js";
+import {userRoutes} from "./userRoutes/userRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -67,6 +68,7 @@ app.get("/getRecommend", async (req, res) => {
   }
 });
 app.use('/auth', authRoutes);
+app.use('/user',userRoutes)
 mongoose
   .connect(dbURI)
   .then(() => {
