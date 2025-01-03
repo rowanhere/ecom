@@ -2,6 +2,7 @@ import express from "express";
 import addToWishList from "./addToWishList.js";
 import jwt from "jsonwebtoken";
 import User from "../Models/user.model.js";
+import {addToCart, deleteCart, getCart, updateCart} from "./HandleCart.js";
 
 const checkUser = async (req, res, next) => {
   const getBearToken = req.headers.authorization?.split(" ")[1];
@@ -31,5 +32,8 @@ const checkUser = async (req, res, next) => {
 const router = express.Router();
 router.use(checkUser);
 router.post("/wishlist", addToWishList);
-
+router.get("/cart",getCart)
+router.post("/cart",addToCart)
+router.patch("/cart/:id",updateCart)
+router.delete("/cart/:id",deleteCart)
 export { router as userRoutes };
