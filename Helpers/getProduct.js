@@ -21,7 +21,7 @@ const getProduct = async (req, res, next) => {
     if (parsedRating) filter["rating.rate"] = {$gte: parsedRating} ;
     console.log(filter);
     
-    const products = await Product.find(filter).skip(skip).limit(limit).select(["category","discount","price","rating","thumbnail","id","title"])
+    const products = await Product.find(filter).skip(skip).limit(limit).select(["category","discount","price","rating","thumbnail","_id","id","title"])
     console.log("sent",products.length);
     
     res.send(products)

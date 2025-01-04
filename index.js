@@ -57,6 +57,7 @@ app.get("/getRecommend", async (req, res) => {
           thumbnail: 1,
           id: 1,
           title: 1,
+          _id:1
         },
       },
     ]);
