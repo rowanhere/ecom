@@ -1,31 +1,35 @@
-import e from "express";
 import Product from "../Models/products.model.js";
 import User from "../Models/user.model.js";
+
+const ReturnProductDetails = async (cart) => {
+  const onlyKeys = [...cart.keys()];
+  const product = await Product.find({
+    _id: { $in: onlyKeys },
+  }).select([
+    "category",
+    "title",
+    "_id",
+    "id",
+    "price",
+    "discount",
+    "thumbnail",
+  ]);
+  //add amount on product
+  const amtAdded = product.map((e) => {
+    const getAmt = cart.get(e._id);
+    return { ...e._doc, amount: getAmt.amount };
+  });
+  return amtAdded;
+};
 
 const getCart = async (req, res) => {
   try {
     const user = await User.findById(req.id);
     const cart = user.cart;
     if (cart.length === 0) return res.send([]);
-    const onlyKeys = [...cart.keys()];
-    const product = await Product.find({
-      _id:{$in:onlyKeys}
-    }).select([
-      "category",
-      "title",
-      "_id",
-      "id",
-      "price",
-      "discount",
-      "thumbnail",
-    ]);
-    //add amount on product
-    const amtAdded = product.map((e)=> {
-      const getAmt = cart.get(e._id)
-      return {...e._doc,amount:getAmt.amount}
-    })
-    
-     res.status(200).send(amtAdded);
+    const getCartProductDetails = await ReturnProductDetails(cart);
+
+    res.status(200).send(getCartProductDetails);
   } catch (err) {
     console.log(err);
 
@@ -41,13 +45,20 @@ const addToCart = async (req, res) => {
     if (!productId) {
       return res.status(400).send("Invalid product to add on cart!");
     }
-    let amt = 0;
-    if (cart.has(productId)) amt = parseInt(cart.get(productId).amount);
+    const getProductId = (
+      await Product.findOne({ id: productId }).select(["_id"])
+    )._id;
 
-    cart.set(productId, { amount: ++amt });
+    let amt = 0;
+    const formattedId = getProductId.toString();
+    const checkCart = cart.get(formattedId);
+    if (checkCart) amt = parseInt(checkCart.amount);
+
+    cart.set(formattedId, { amount: ++amt });
     user.cart = cart;
     await user.save();
-    res.send(cart);
+    const getCartProductDetails = await ReturnProductDetails(cart);
+    res.send(getCartProductDetails);
   } catch (err) {
     console.log(err);
 

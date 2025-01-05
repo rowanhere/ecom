@@ -24,7 +24,7 @@ const checkUser = async (req, res, next) => {
   } catch (err) {
     console.log(err.message);
 
-    if (err.message === "invalid token") {
+    if (err.message === "invalid token" || err.message === "jwt expired") {
       return res.status(400).send("Please log in");
     }
     res.status(500).json({ message: "Internal server error" });
