@@ -22,7 +22,7 @@ const login = async (req, res, next) => {
     { userId: user._id },
     process.env.SECRET_KEY,
     {
-      expiresIn: "5h",
+      expiresIn: "1w",
     }
   );  
   res.json({ message:key });
