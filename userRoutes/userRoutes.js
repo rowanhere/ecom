@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import User from "../Models/user.model.js";
 import { addToCart, deleteCart, getCart, updateCart } from "./HandleCart.js";
 import getAllWishlist from "./getAllWishlist.js";
+import getProfile from "./getProfile.js";
 
 const checkUser = async (req, res, next) => {
   const getBearToken = req.headers.authorization?.split(" ")[1];
@@ -51,4 +52,5 @@ router.get("/cart", getCart);
 router.post("/cart", addToCart);
 router.patch("/cart/:id", updateCart);
 router.delete("/cart/:id", deleteCart);
+router.get("/profile",getProfile)
 export { router as userRoutes };
