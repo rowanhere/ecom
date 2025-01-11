@@ -5,6 +5,7 @@ import User from "../Models/user.model.js";
 import { addToCart, deleteCart, getCart, updateCart } from "./HandleCart.js";
 import getAllWishlist from "./getAllWishlist.js";
 import getProfile from "./getProfile.js";
+import { changeMail, changePassword } from "./updateDetails.js";
 
 const checkUser = async (req, res, next) => {
   const getBearToken = req.headers.authorization?.split(" ")[1];
@@ -53,4 +54,6 @@ router.post("/cart", addToCart);
 router.patch("/cart/:id", updateCart);
 router.delete("/cart/:id", deleteCart);
 router.get("/profile",getProfile)
+router.post("/changemail/:email",changeMail)
+router.post("/changepassword",changePassword)
 export { router as userRoutes };
