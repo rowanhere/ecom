@@ -6,6 +6,7 @@ import { addToCart, deleteCart, getCart, updateCart } from "./HandleCart.js";
 import getAllWishlist from "./getAllWishlist.js";
 import getProfile from "./getProfile.js";
 import { changeMail, changePassword } from "./updateDetails.js";
+import checkSession from "../Helpers/checkSession.js";
 
 const checkUser = async (req, res, next) => {
   const getBearToken = req.headers.authorization?.split(" ")[1];
@@ -24,7 +25,7 @@ const checkUser = async (req, res, next) => {
     req.id = userId;
     next();
   } catch (err) {
-    console.log(err.message);
+    console.log(err.message,"user: " ,req.id);
 
     if (err.message === "invalid token" || err.message === "jwt expired") {
       return res.status(400).send("Please log in");
@@ -56,4 +57,6 @@ router.delete("/cart/:id", deleteCart);
 router.get("/profile",getProfile)
 router.post("/changemail/:email",changeMail)
 router.post("/changepassword",changePassword)
+router.get("/session",checkSession)
+
 export { router as userRoutes };
