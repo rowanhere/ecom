@@ -30,8 +30,18 @@ const userSchema = new mongoose.Schema(
       type:Map,
       of:Object,
       default:{}
-    }
+    },
+    picture:{
+      name:{
+       type:String,
+       default:"Profile picture"
+      },
+      image:{
+        data:Buffer,
+      },
+   },
   },
+
   { timestamps: true }
 );
 
