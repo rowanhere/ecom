@@ -7,6 +7,7 @@ const getProfile = async (req, res) => {
     "username",
     "email",
     "role",
+    "picture",
     "-_id",
   ]);
   res.status(200).json(userProfile);
